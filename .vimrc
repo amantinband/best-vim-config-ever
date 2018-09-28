@@ -28,10 +28,11 @@ set foldmethod=syntax
 set foldlevel=99
 set hlsearch
 
+" exit insert mode with jj
 inoremap jj <ESC>
 " comment line (c style) with ctrl-c
 nnoremap <C-e> 0i//<ESC>j0
-" uncomment line with ctrl-c
+" uncomment line with ctrl-q
 nnoremap <C-q> 0f/ld0
 " jump 10 lines up and down with ctrl-k and ctrl-j
 nnoremap <C-k> 10k
