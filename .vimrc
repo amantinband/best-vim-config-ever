@@ -1,11 +1,14 @@
 execute pathogen#infect()
 syntax on
 filetype plugin indent on
+
 set t_Co=256
 set encoding=utf-8
 
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
+
+" highlight cursor line
 function s:SetCursorLine()
     set cursorline
             hi cursorline cterm=none ctermbg=235
@@ -26,18 +29,23 @@ set foldlevel=99
 set hlsearch
 
 inoremap jj <ESC>
+" comment line (c style) with ctrl-c
 nnoremap <C-e> 0i//<ESC>j0
+" uncomment line with ctrl-c
 nnoremap <C-q> 0f/ld0
+" jump 10 lines up and down with ctrl-k and ctrl-j
 nnoremap <C-k> 10k
 nnoremap <C-j> 10j
-nnoremap + gt
-nnoremap _ gT
+" jump between buffers with ) and (
 nnoremap ) :bn<CR>
 nnoremap ( :bp<CR>
+" delete buffer with D
 nnoremap D :bd<CR>
+" add empty line below with _
 nnoremap _ o<ESC>k
+" toggle fold with E
 nnoremap E za
-
+" toggle nerd tree with ctrl-n
 map <C-n> :NERDTreeToggle<CR>
 
 if has('persistent_undo')
@@ -45,6 +53,7 @@ if has('persistent_undo')
     set undodir=$HOME/.vim/undo
 endif
 
+" beautify your color-scheme
 autocmd FileType * call <SID>def_base_syntax()
 function! s:def_base_syntax()
 	syntax match commonOperator "\(=\|+=\|-=\|<=\|>=\|<<=\|>>=\|&=\|\\=\|*=\||=\|!=\)"
@@ -59,10 +68,12 @@ function! s:def_base_syntax()
 	hi Type ctermfg=red
     hi NonText ctermfg=238
     hi Comment ctermfg=244
+    " mark extra white spaces
     hi ExtraWhitespace ctermbg=red guibg=red
     match ExtraWhitespace /\s\+$/
 endfunction
 
+" beautify your function folds
 function! NeatFoldText()
     let line = ' ' . substitute(getline(v:foldstart), '^\s*"\?\s*\|\s*"\?\s*{{' . '{\d*\s*', '', 'g') . ' '
     let lines_count = v:foldend - v:foldstart + 1
@@ -76,6 +87,7 @@ endfunction
 
 set foldtext=NeatFoldText()
 
+" toggle cursor-colum
 fu! ToggleCurline ()
     if &cursorcolumn
         set nocursorcolumn
@@ -84,6 +96,7 @@ fu! ToggleCurline ()
     endif
 endfunction
 
+" toggle cursor-colum with cl
 map cl :call ToggleCurline()<CR>
 
 " plugins:
@@ -106,6 +119,9 @@ map cl :call ToggleCurline()<CR>
 "
 " google-searchindex
 " cd ~/.vim/bundle && git clone https://github.com/google/vim-searchindex.git
+"
+" persistent undo:
+" mkdir ~/.vim/undo
 "
 "
 " fonts:
