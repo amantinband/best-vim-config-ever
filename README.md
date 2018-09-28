@@ -1,9 +1,34 @@
 # BEST VIM CONFIGURATION EVER
+### want your vim to look exactly like this:  
+![Alt Text](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gi://github.com/mantinband/best-vim-config-ever/blob/master/gifs/playing_around.gif)
 
-### simply place .vimrc in your ~, copy & paste following commands and you're set!
+##### with all the best plugins like nerd-tree  
+![Alt Text](https://github.com/mantinband/best-vim-config-ever/blob/master/gifs/nerdtree.gif)
+
+##### and ctrl-p  
+![Alt Text](https://github.com/mantinband/best-vim-config-ever/blob/master/gifs/nerdtree.gi://github.com/mantinband/best-vim-config-ever/blob/master/gifs/ctrlp.gif)
+
+##### and fugitive 
+![Alt Text](https://github.com/mantinband/best-vim-config-ever/blob/master/gifs/nerdtree.gi://github.com/mantinband/best-vim-config-ever/blob/master/gifs/ctrlp.gi://github.com/mantinband/best-vim-config-ever/blob/master/gifs/fugitive.gif)
+
+##### and googles search-index  
+![Alt Text](https://github.com/mantinband/best-vim-config-ever/blob/master/gifs/search.gif)
+
+##### and of course airline's legendary power-line:  
+![Alt Text](https://github.com/mantinband/best-vim-config-ever/blob/master/gifs/search.gi://github.com/mantinband/best-vim-config-ever/blob/master/gifs/buffers.gif)
+
+##### and if thats not enough there are a couple of beautiful shtiks like marks for trailing white spaces  
+![Alt Text](https://github.com/mantinband/best-vim-config-ever/blob/master/gifs/search.gi://github.com/mantinband/best-vim-config-ever/blob/master/gifs/buffers.gi://github.com/mantinband/best-vim-config-ever/blob/master/gifs/extra_spaces.gif)
+
+##### and function folds  
+![Alt Text](https://github.com/mantinband/best-vim-config-ever/blob/master/gifs/folds.gif)
 
 
-plugins:  
+## want your vim to look exactly the same ? 
+ simply place .vimrc in your ~, copy & paste following commands and you're set!  
+
+
+#### plugins:  
 
 1. pathogen vim:  
     mkdir -p ~/.vim/autoload ~/.vim/bundle && \
