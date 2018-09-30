@@ -55,6 +55,7 @@
     ./install.sh  
     cd ..  
     rm -rf fonts  
+    fc-cache -vf  
 
 8. persistent undo:  
     mkdir ~/.vim/undo  

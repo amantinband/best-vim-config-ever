@@ -99,7 +99,7 @@ endfunction
 
 " toggle cursor-colum with cl
 map cl :call ToggleCurline()<CR>
-
+map :gig :!git grep -in
 " plugins:
 "
 " pathogen vim:
