@@ -33,7 +33,7 @@ inoremap jj <ESC>
 " comment line (c style) with ctrl-c
 nnoremap <C-e> 0i//<ESC>j0
 " uncomment line with ctrl-q
-nnoremap <C-q> 0f/ld0
+nnoremap <C-q> 0xx
 " jump 10 lines up and down with ctrl-k and ctrl-j
 nnoremap <C-k> 10k
 nnoremap <C-j> 10j
@@ -43,7 +43,7 @@ nnoremap ( :bp<CR>
 " delete buffer with D
 nnoremap D :bd<CR>
 " add empty line below with _
-nnoremap _ o<ESC>k
+nnoremap # o<ESC>k
 " toggle fold with E
 nnoremap E za
 " toggle nerd tree with ctrl-n
@@ -57,8 +57,12 @@ endif
 " beautify your color-scheme
 autocmd FileType * call <SID>def_base_syntax()
 function! s:def_base_syntax()
-	syntax match commonOperator "\(=\|+=\|-=\|<=\|>=\|<<=\|>>=\|&=\|\\=\|*=\||=\|!=\)"
-	syntax match Integers "\(uint32\|uint16\|uint8\|uint64\)"
+	syntax match commonOperator "\(=\|+=\|-=\|<=\|>=\|<<=\|>>=\|&=\|\\=\|*=\||=\|!=\|||\)"
+	syntax match Integers "\(uint32\|uint16\|uint8\|uint64\|return_t\)"
+	syntax match braces1 "\((\|)\)"
+	syntax match braces2 "\({\|}\)"
+    hi braces1 ctermfg=cyan
+    hi braces2 ctermfg=122
 	hi commonOperator ctermfg=cyan
 	hi link Integers Type
     hi Folded ctermbg=233 ctermfg=white cterm=bold
@@ -97,9 +101,13 @@ fu! ToggleCurline ()
     endif
 endfunction
 
+let mapleader = ","
 " toggle cursor-colum with cl
 map cl :call ToggleCurline()<CR>
-map :gig :!git grep -in
+" map :gig to :!git grep -in, allowing free text to come after
+map <Leader>gig :!git grep -in
+" map :gis to git grep -in word under cursor
+map <Leader>gis yiw:!git grep -in <C-r>"<CR>
 " plugins:
 "
 " pathogen vim:
