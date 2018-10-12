@@ -103,7 +103,6 @@ augroup my_syntax
     autocmd VimEnter * call s:SetCursorLine()
 augroup END
 
-
 " beautify your function folds
 function! NeatFoldText()
     let line = ' ' . substitute(getline(v:foldstart), '^\s*"\?\s*\|\s*"\?\s*{{' . '{\d*\s*', '', 'g') . ' '
