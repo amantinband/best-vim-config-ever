@@ -82,7 +82,7 @@ augroup my_syntax
         if (&filetype == 'c')
     	    syntax match Integers "\(uint32\|uint16\|uint8\|uint64\|\w\+_t\(\s\|;\)\@=\|\w\+_type\s\)"
             syntax match cCustomFunc "\w\+\s*(\@=" contains=cCustomParen
-            syntax match cCustomFuncDec "\(void\s\+\|u\?int\(8\|16\|32\|64\)\?\s\+\|struct \w\+\s\+\)\@<=\w\+\s*\((\)\@=" contains=cCustomParen,cType,Integers,cCustomScope
+            syntax match cCustomFuncDec "\(\*\s*\|void\s\+\|u\?int\(8\|16\|32\|64\)\?\s\+\|struct \w\+\s\+\)\@<=\w\+\s*\((\)\@=" contains=cCustomParen,cType,Integers,cCustomScope
             hi link cCustomFunc Function
             hi Function ctermfg=lightblue
             hi cCustomFuncDec ctermfg=green
@@ -90,7 +90,7 @@ augroup my_syntax
         elseif (&filetype == 'cpp')
     	    syntax match Integers "\(uint32\|uint16\|uint8\|uint64\|\w\+_t\(\s\|;\)\@=\|\w\+_type\s\|stringstream\|string\)"
             syntax match cCustomFunc "\w\+\s*(\@=" contains=cCustomParen
-            syntax match cCustomFuncDec "\(::\|void\s\+\|u\?int\(8\|16\|32\|64\)\?\s\+\|struct \w\+\s\+\)\@<=\w\+\s*\((\)\@=" contains=cCustomParen,cType,Integers,cCustomScope
+            syntax match cCustomFuncDec "\(::\|bool\s\+\|string\s\+\|\*\s*\|void\s\+\|u\?int\(8\|16\|32\|64\)\?\s\+\|struct \w\+\s\+\)\@<=\w\+\s*\((\)\@=" contains=cCustomParen,cType,Integers,cCustomScope
             syntax match cCustomScope "::"
             syntax match cCustomClass "\w\+\s*::" contains=cCustomScope
             hi cCustomClass ctermfg=13
