@@ -57,12 +57,12 @@ endif
 " beautify your color-scheme
 autocmd FileType * call <SID>def_base_syntax()
 function! s:def_base_syntax()
-	syntax match commonOperator "\(=\|+=\|-=\|<=\|>=\|<<=\|>>=\|&=\|\\=\|*=\||=\|!=\|||\)"
-	syntax match Integers "\(uint32\|uint16\|uint8\|uint64\|return_t\)"
-	syntax match braces1 "\((\|)\)"
-	syntax match braces2 "\({\|}\)"
-    hi braces1 ctermfg=cyan
-    hi braces2 ctermfg=122
+	syntax match commonOperator "\(=\|+=\|&&\|-=\|<=\|>=\|<<=\|>>=\|&=\|\\=\|*=\||=\|!=\|||\)"
+	syntax match Integers "\(uint32\|uint16\|uint8\|uint64\|\w\+_t\(\s\|;\)\@=\|\w\+_type\s\)"
+"	syntax match braces1 "\((\|)\)"
+"	syntax match braces2 "\({\|}\)"
+"    hi braces1 ctermfg=cyan
+"    hi braces2 ctermfg=122
 	hi commonOperator ctermfg=cyan
 	hi link Integers Type
     hi Folded ctermbg=233 ctermfg=white cterm=bold
@@ -73,9 +73,21 @@ function! s:def_base_syntax()
 	hi Type ctermfg=red
     hi NonText ctermfg=238
     hi Comment ctermfg=244
+    hi PreCondit ctermfg=13
     " mark extra white spaces
     hi ExtraWhitespace ctermbg=red guibg=red
     match ExtraWhitespace /\s\+$/
+    if (&filetype == 'c' || &filetype == 'cpp')
+        syntax match cCustomParen "?=(" contains=cParen,cCppParen
+        syntax match cCustomFunc "\w\+\s*(\@=" contains=cCustomParen
+        syntax match cCustomFuncDec "\(void\|u\?int\(8\|16\|32\|64\)\?\|struct \w\+\|\w\+_t\|\w\+_type\)\@<=\s\+\w\+\s*\((\)\@=" contains=cCustomParen,cType,Integers
+        syntax match cCustomScope "::"
+        syntax match cCustomClass "\w\+\s*::" contains=cCustomScope
+        hi link cCustomFunc Function
+        hi Function ctermfg=lightblue
+        hi cCustomFuncDec ctermfg=green
+        hi cCustomClass ctermfg=lightblue
+    endif
 endfunction
 
 " beautify your function folds
