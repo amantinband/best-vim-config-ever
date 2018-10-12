@@ -11,9 +11,8 @@ let g:airline#extensions#tabline#enabled = 1
 " highlight cursor line
 function s:SetCursorLine()
     set cursorline
-            hi cursorline cterm=none ctermbg=235
-      endfunction
-autocmd VimEnter * call s:SetCursorLine()
+    hi cursorline cterm=none ctermbg=235
+endfunction
 
 set background=dark
 set nu
@@ -27,6 +26,9 @@ set list listchars=tab:\ \ ,eol:¬
 set foldmethod=syntax
 set foldlevel=99
 set hlsearch
+set re=1
+set ttyfast
+set lazyredraw
 
 " exit insert mode with jj
 inoremap jj <ESC>
@@ -55,28 +57,52 @@ if has('persistent_undo')
 endif
 
 " beautify your color-scheme
-autocmd FileType * call <SID>def_base_syntax()
-function! s:def_base_syntax()
-	syntax match commonOperator "\(=\|+=\|-=\|<=\|>=\|<<=\|>>=\|&=\|\\=\|*=\||=\|!=\|||\)"
-	syntax match Integers "\(uint32\|uint16\|uint8\|uint64\|return_t\)"
-	syntax match braces1 "\((\|)\)"
-	syntax match braces2 "\({\|}\)"
-    hi braces1 ctermfg=cyan
-    hi braces2 ctermfg=122
-	hi commonOperator ctermfg=cyan
-	hi link Integers Type
-    hi Folded ctermbg=233 ctermfg=white cterm=bold
-    hi Search ctermbg=darkgray ctermfg=NONE
-	hi Comment ctermfg=lightblue
-	hi LineNr ctermfg=darkgray
-	hi CursorLineNr ctermfg=gray
-	hi Type ctermfg=red
-    hi NonText ctermfg=238
-    hi Comment ctermfg=244
-    " mark extra white spaces
-    hi ExtraWhitespace ctermbg=red guibg=red
-    match ExtraWhitespace /\s\+$/
-endfunction
+augroup my_syntax
+    au!
+    autocmd FileType * call <SID>def_base_syntax()
+    function! s:def_base_syntax()
+    	syntax match commonOperator "\(=\|^=\|+=\|&&\|-=\|<=\|>=\|<<=\|>>=\|&=\|\\=\|*=\||=\|!=\|||\)"
+    "	syntax match braces1 "\((\|)\)"
+    "	syntax match braces2 "\({\|}\)"
+    "    hi braces1 ctermfg=cyan
+    "    hi braces2 ctermfg=122
+    	hi commonOperator ctermfg=cyan
+        hi Folded ctermbg=233 ctermfg=white cterm=bold
+        hi Search ctermbg=darkgray ctermfg=NONE
+    	hi Comment ctermfg=lightblue
+    	hi LineNr ctermfg=darkgray
+    	hi CursorLineNr ctermfg=gray
+    	hi Type ctermfg=red
+        hi NonText ctermfg=238
+        hi Comment ctermfg=244
+        hi PreCondit ctermfg=13
+        " mark extra white spaces
+        hi ExtraWhitespace ctermbg=red guibg=red
+        match ExtraWhitespace /\s\+$/
+        if (&filetype == 'c')
+    	    syntax match Integers "\(uint32\|uint16\|uint8\|uint64\|\w\+_t\(\s\|;\)\@=\|\w\+_type\s\)"
+            syntax match cCustomFunc "\w\+\s*(\@=" contains=cCustomParen
+            syntax match cCustomFuncDec "\(void\s\+\|u\?int\(8\|16\|32\|64\)\?\s\+\|struct \w\+\s\+\)\@<=\w\+\s*\((\)\@=" contains=cCustomParen,cType,Integers,cCustomScope
+            hi link cCustomFunc Function
+            hi Function ctermfg=lightblue
+            hi cCustomFuncDec ctermfg=green
+    	    hi link Integers Type
+        elseif (&filetype == 'cpp')
+    	    syntax match Integers "\(uint32\|uint16\|uint8\|uint64\|\w\+_t\(\s\|;\)\@=\|\w\+_type\s\|stringstream\|string\)"
+            syntax match cCustomFunc "\w\+\s*(\@=" contains=cCustomParen
+            syntax match cCustomFuncDec "\(::\|void\s\+\|u\?int\(8\|16\|32\|64\)\?\s\+\|struct \w\+\s\+\)\@<=\w\+\s*\((\)\@=" contains=cCustomParen,cType,Integers,cCustomScope
+            syntax match cCustomScope "::"
+            syntax match cCustomClass "\w\+\s*::" contains=cCustomScope
+            hi cCustomClass ctermfg=13
+            hi link cCustomFunc Function
+            hi Function ctermfg=lightblue
+            hi cCustomFuncDec ctermfg=green
+    	    hi link Integers Type
+        endif
+    endfunction
+    autocmd VimEnter * call s:SetCursorLine()
+augroup END
+
 
 " beautify your function folds
 function! NeatFoldText()
