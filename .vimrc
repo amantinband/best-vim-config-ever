@@ -56,53 +56,6 @@ if has('persistent_undo')
     set undodir=$HOME/.vim/undo
 endif
 
-" beautify your color-scheme
-augroup my_syntax
-    au!
-    autocmd FileType * call <SID>def_base_syntax()
-    function! s:def_base_syntax()
-    	syntax match commonOperator "\(=\|^=\|+=\|&&\|-=\|<=\|>=\|<<=\|>>=\|&=\|\\=\|*=\||=\|!=\|||\)"
-    "	syntax match braces1 "\((\|)\)"
-    "	syntax match braces2 "\({\|}\)"
-    "    hi braces1 ctermfg=cyan
-    "    hi braces2 ctermfg=122
-    	hi commonOperator ctermfg=cyan
-        hi Folded ctermbg=233 ctermfg=white cterm=bold
-        hi Search ctermbg=darkgray ctermfg=NONE
-    	hi Comment ctermfg=lightblue
-    	hi LineNr ctermfg=darkgray
-    	hi CursorLineNr ctermfg=gray
-    	hi Type ctermfg=red
-        hi NonText ctermfg=238
-        hi Comment ctermfg=244
-        hi PreCondit ctermfg=13
-        " mark extra white spaces
-        hi ExtraWhitespace ctermbg=red guibg=red
-        match ExtraWhitespace /\s\+$/
-        if (&filetype == 'c')
-    	    syntax match Integers "\(uint32\|uint16\|uint8\|uint64\|\w\+_t\(\s\|;\)\@=\|\w\+_type\s\)"
-            syntax match cCustomFunc "\w\+\s*(\@=" contains=cCustomParen
-            syntax match cCustomFuncDec "\(\*\s*\|void\s\+\|u\?int\(8\|16\|32\|64\)\?\s\+\|struct \w\+\s\+\)\@<=\w\+\s*\((\)\@=" contains=cCustomParen,cType,Integers,cCustomScope
-            hi link cCustomFunc Function
-            hi Function ctermfg=lightblue
-            hi cCustomFuncDec ctermfg=green
-    	    hi link Integers Type
-        elseif (&filetype == 'cpp')
-    	    syntax match Integers "\(uint32\|uint16\|uint8\|uint64\|\w\+_t\(\s\|;\)\@=\|\w\+_type\s\|stringstream\|string\)"
-            syntax match cCustomFunc "\w\+\s*(\@=" contains=cCustomParen
-            syntax match cCustomFuncDec "\(::\|bool\s\+\|string\s\+\|\*\s*\|void\s\+\|u\?int\(8\|16\|32\|64\)\?\s\+\|struct \w\+\s\+\)\@<=\w\+\s*\((\)\@=" contains=cCustomParen,cType,Integers,cCustomScope
-            syntax match cCustomScope "::"
-            syntax match cCustomClass "\w\+\s*::" contains=cCustomScope
-            hi cCustomClass ctermfg=13
-            hi link cCustomFunc Function
-            hi Function ctermfg=lightblue
-            hi cCustomFuncDec ctermfg=green
-    	    hi link Integers Type
-        endif
-    endfunction
-    autocmd VimEnter * call s:SetCursorLine()
-augroup END
-
 " beautify your function folds
 function! NeatFoldText()
     let line = ' ' . substitute(getline(v:foldstart), '^\s*"\?\s*\|\s*"\?\s*{{' . '{\d*\s*', '', 'g') . ' '
@@ -114,6 +67,82 @@ function! NeatFoldText()
     let foldtextlength = strlen(substitute(foldtextstart . foldtextend, '.', 'x', 'g')) + &foldcolumn
     return foldtextstart . repeat(foldchar, winwidth(0)-foldtextlength) . foldtextend
 endfunction
+
+" beautify color-scheme
+function! s:def_base_syntax()
+	syntax match commonOperator "\(=\|^=\|+=\|&&\|-=\|<=\|>=\|<<=\|>>=\|&=\|\\=\|*=\||=\|!=\|||\)"
+	syntax match basicTypes "\(u\?int\(8\|16\|32\|64\)\?\s\|\w\+_t\(\s\|;\|)\)\@=\)"
+"	syntax match braces1 "\((\|)\)"
+"	syntax match braces2 "\({\|}\)"
+"    hi braces1 ctermfg=cyan
+"    hi braces2 ctermfg=122
+    hi link basicTypes Type
+	hi commonOperator ctermfg=cyan
+    hi Folded ctermbg=233 ctermfg=white cterm=bold
+    hi Search ctermbg=darkgray ctermfg=NONE
+	hi Comment ctermfg=lightblue
+	hi LineNr ctermfg=darkgray
+	hi CursorLineNr ctermfg=gray
+	hi Type ctermfg=red
+    hi NonText ctermfg=238
+    hi Comment ctermfg=244
+    hi PreCondit ctermfg=13
+    " mark extra white spaces
+    hi ExtraWhitespace ctermbg=red guibg=red
+    match ExtraWhitespace /\s\+$/
+    syn match Tabs "\t"
+    hi Tabs ctermbg=lightred guibg=red
+endfunction
+
+function! s:c_syntax()
+    syntax match cCustomFunc "\w\+\s*(\@=" contains=cCustomParen
+    syntax match cCustomFuncDec "\(char\s\+\|\*\s*\|void\s\+\|u\?int\(8\|16\|32\|64\)\?\s\+\|struct \w\+\s\+\|return_t\s\+\)\@<=\w\+\s*\((\)\@=" contains=cCustomParen,cType,Integers,cCustomScope
+    hi link cCustomFunc Function
+    hi Function ctermfg=lightblue
+    hi cCustomFuncDec ctermfg=green
+endfunction
+
+function! s:cpp_syntax()
+	syntax match moreTypes "\(stringstream\|string\)"
+    syntax match cCustomFunc "\w\+\s*(\@=" contains=cCustomParen
+    syntax match cCustomFuncDec "\(::\|bool\s\+\|string\s\+\|\*\s*\|void\s\+\|u\?int\(8\|16\|32\|64\)\?\s\+\|struct \w\+\s\+\|return_t\s\+\)\@<=\w\+\s*\((\)\@=" contains=cCustomParen,cType,Integers,cCustomScope
+    syntax match cCustomScope "::"
+    syntax match cCustomClass "\w\+\s*::" contains=cCustomScope
+    hi cCustomClass ctermfg=13
+    hi link cCustomFunc Function
+    hi Function ctermfg=lightblue
+    hi cCustomFuncDec ctermfg=green
+	hi link moreTypes Type
+endfunction
+
+augroup my_syntax
+    au!
+"    autocmd FileType c call <SID>c_syntax()
+"    autocmd FileType cpp call <SID>cpp_syntax()
+    autocmd FileType * call <SID>def_base_syntax()
+    autocmd VimEnter * call s:SetCursorLine()
+    autocmd bufEnter * let b:colors_on=0
+augroup END
+
+
+let b:colors_on=0
+function! ToggleColors()
+    if b:colors_on
+        let b:colors_on=0
+        syntax off
+        syntax on
+        call <SID>def_base_syntax()
+    else
+        let b:colors_on=1
+        if (&filetype == 'c')
+            call <SID>c_syntax()
+        elseif (&filetype == 'cpp')
+            call <SID>cpp_syntax()
+        endif
+    endif
+endfunction
+
+map co :call ToggleColors()<CR>
 
 set foldtext=NeatFoldText()
 
