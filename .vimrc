@@ -7,6 +7,7 @@ set encoding=utf-8
 
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
+let g:ctrlp_clear_cache_on_exit = 0
 
 " highlight cursor line
 function s:SetCursorLine()
@@ -39,15 +40,26 @@ nnoremap <C-q> 0xx
 " jump 10 lines up and down with ctrl-k and ctrl-j
 nnoremap <C-k> 10k
 nnoremap <C-j> 10j
+nnoremap <C-z> :bp<CR>
+nnoremap <C-x> :bn<CR>
 " jump between buffers with ) and (
 nnoremap ) :bn<CR>
 nnoremap ( :bp<CR>
 " delete buffer with D
 nnoremap D :bd<CR>
-" add empty line below with _
+" add empty line below with #
 nnoremap # o<ESC>k
+" add space with space
+nnoremap <Space> i<Space><ESC>h
 " toggle fold with E
 nnoremap E za
+map <C-Right> <C-w>l
+map <C-Left> <C-w>h
+map <C-Down> <C-w>j
+map <C-Up> <C-w>k
+"<Right>
+"<Up>
+"<Down>
 " toggle nerd tree with ctrl-n
 map <C-n> :NERDTreeToggle<CR>
 
@@ -71,7 +83,7 @@ endfunction
 " beautify color-scheme
 function! s:def_base_syntax()
 	syntax match commonOperator "\(=\|^=\|+=\|&&\|-=\|<=\|>=\|<<=\|>>=\|&=\|\\=\|*=\||=\|!=\|||\)"
-	syntax match basicTypes "\(u\?int\(8\|16\|32\|64\)\?\s\|\w\+_t\(\s\|;\|)\)\@=\)"
+	syntax match basicTypes "\(u\?int\(8\|16\|32\|64\)\?\s\|\w\+_t\(\s\|;\|)\|*\)\@=\)"
 "	syntax match braces1 "\((\|)\)"
 "	syntax match braces2 "\({\|}\)"
 "    hi braces1 ctermfg=cyan
@@ -134,17 +146,21 @@ function! ToggleColors()
         call <SID>def_base_syntax()
     else
         let b:colors_on=1
-        if (&filetype == 'c')
-            call <SID>c_syntax()
-        elseif (&filetype == 'cpp')
-            call <SID>cpp_syntax()
-        endif
+        call <SID>TurnOnColors()
     endif
 endfunction
 
 map co :call ToggleColors()<CR>
 
 set foldtext=NeatFoldText()
+
+function! s:TurnOnColors()
+    if (&filetype == 'c')
+        call <SID>c_syntax()
+    elseif (&filetype == 'cpp')
+        call <SID>cpp_syntax()
+    endif
+endfunction
 
 " toggle cursor-colum
 fu! ToggleCurline ()
@@ -154,6 +170,27 @@ fu! ToggleCurline ()
         set cursorcolumn
     endif
 endfunction
+
+function! ToggleComment()
+    execute "normal ^"
+    if '//' == strpart(getline("."), col(".")-1, 2)
+        execute "normal xx"
+    else
+        execute "normal 0i//"
+    endif
+endfunction
+
+function! ToggleHome()
+    let a:cur_pos = col(".")
+    execute "normal ^"
+
+    if a:cur_pos == col(".")
+        execute "normal 0"
+    endif
+endfunction
+
+map <Home> :call ToggleHome()<CR>
+map <C-_> :call ToggleComment()<CR>
 
 let mapleader = ","
 " toggle cursor-colum with cl
