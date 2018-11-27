@@ -53,10 +53,10 @@ nnoremap # o<ESC>k
 nnoremap <Space> i<Space><ESC>h
 " toggle fold with E
 nnoremap E za
-map <C-Right> <C-w>l
-map <C-Left> <C-w>h
-map <C-Down> <C-w>j
-map <C-Up> <C-w>k
+map <C-l> <C-w>l
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
 "<Right>
 "<Up>
 "<Down>
@@ -196,9 +196,9 @@ let mapleader = ","
 " toggle cursor-colum with cl
 map cl :call ToggleCurline()<CR>
 " map :gig to :!git grep -in, allowing free text to come after
-map <Leader>gig :!git grep -in
+map <Leader>gig :Gitgrep
 " map :gis to git grep -in word under cursor
-map <Leader>gis yiw:!git grep -in <C-r>"<CR>
+map <Leader>gis yiw:Gitgrep <C-r>"<CR>
 " plugins:
 "
 " pathogen vim:
