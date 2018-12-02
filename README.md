@@ -62,8 +62,8 @@
 
 9. you complete me:  
      cd ~/.vim/bundle && git clone https://github.com/Valloric/YouCompleteMe  
-     cd YouCompleteMe
-     ./install.sh
+     cd && YouCompleteMe  
+     python ./install.py  
 
 10. grep:  
     cd ~/.vim/bundle && git clone https://github.com/yegappan/grep  

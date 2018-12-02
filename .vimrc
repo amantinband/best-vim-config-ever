@@ -53,6 +53,7 @@ nnoremap # o<ESC>k
 nnoremap <Space> i<Space><ESC>h
 " toggle fold with E
 nnoremap E za
+nnoremap X :q<CR>
 map <C-l> <C-w>l
 map <C-h> <C-w>h
 map <C-j> <C-w>j
@@ -189,10 +190,23 @@ function! ToggleHome()
     endif
 endfunction
 
-map <Home> :call ToggleHome()<CR>
-map <C-_> :call ToggleComment()<CR>
+" credit to Ingo Karkat from SO
+function! s:ToggleBlame()
+    if &l:filetype ==# 'fugitiveblame'
+        close
+    else
+        Gblame
+    endif
+endfunction
 
 let mapleader = ","
+" use gb to toggle Gblame
+nnoremap <silent>gb :call <SID>ToggleBlame()<CR>
+" use home button to toggle between first character of line and beggining of
+" line
+map <Home> :call ToggleHome()<CR>
+" use ctrl-/ to comment/uncomment
+map <C-_> :call ToggleComment()<CR>
 " toggle cursor-colum with cl
 map cl :call ToggleCurline()<CR>
 " map :gig to :!git grep -in, allowing free text to come after
