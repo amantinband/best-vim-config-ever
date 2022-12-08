@@ -1,4 +1,9 @@
-# BEST VIM CONFIGURATION EVER
+# VIM - out, NEOVIM - in
+# My new config is available here: https://github.com/amantinband/dotfiles
+
+---
+
+## BEST VIM CONFIGURATION EVER
 ### want your vim to look exactly like this:  
 ![Alt Text](https://github.com/mantinband/best-vim-config-ever/blob/master/gifs/playing_around.gif)
 
